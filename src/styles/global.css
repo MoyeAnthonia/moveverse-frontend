@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700;800&display=swap");
+
+* {
+    box-sizing: border-box; 
+}
+:root {
+  --primary-color: #3b82f6;
+  --main-border-radius: 8px;
+  --cyan: #38e1ff;
+  --violet: #9b6dff;
+  --font-family: 'Press Start 2P', monospace;
+  --bg-main-color: rgb(27, 34, 60)
+}
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: #04101f;
+  color: #fff;
+
+}
