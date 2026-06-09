@@ -10,18 +10,9 @@ export interface FeatureCardProps extends HTMLAttributes<HTMLDivElement> {
   description: string;
 }
 
-function FeatureCard({
-  icon,
-  title,
-  description,
-  className,
-  ...rest
-}: FeatureCardProps) {
+function FeatureCard({ icon, title, description, className, ...rest }: FeatureCardProps) {
   return (
-    <article
-      className={[styles.step, className].filter(Boolean).join(" ")}
-      {...rest}
-    >
+    <article className={[styles.step, className].filter(Boolean).join(" ")} {...rest}>
       <div className={styles.stepIcon} aria-hidden="true">
         {icon}
       </div>
