@@ -22,6 +22,9 @@ html {
   --body: "Sora", sans-serif;
   --mono: "Chakra Petch", monospace;
   --bg-main-color: rgb(27, 34, 60);
+  --easy-color: rgb(14, 165, 80);
+  --medium-color: rgb(239, 139, 17);
+  --hard-color: rgb(216, 25, 46);
 }
 body {
   margin: 0;

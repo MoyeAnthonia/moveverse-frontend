@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+import { useNavigate } from "react-router";
 import styles from "./Cards.module.css";
 
 export interface FeatureCardProps extends HTMLAttributes<HTMLDivElement> {
@@ -21,7 +22,6 @@ type GameCardProps = HTMLAttributes<HTMLDivElement> & {
   exercise: string;
   description: string;
   ctaLabel?: string;
-  onPlay?: () => void;
 };
 
 function FeatureCard({ icon, title, description, className, ...rest }: FeatureCardProps) {
@@ -86,10 +86,14 @@ function GameCard({
   exercise,
   description,
   ctaLabel = "Play",
-  onPlay,
   className,
   ...props
 }: GameCardProps) {
+  const nav = useNavigate();
+  const gameNavigate = () => {
+    nav("/level");
+  };
+
   return (
     <article className={`${styles.gameCard} ${className ?? ""}`} {...props}>
       <div className={styles.gameMedia}>{media}</div>
@@ -97,7 +101,7 @@ function GameCard({
       <h3 className={styles.gameTitle}>{title}</h3>
       <p className={styles.gameExercise}>{exercise}</p>
       <p className={styles.gameDesc}>{description}</p>
-      <button type="button" className={styles.playBtn} onClick={onPlay}>
+      <button type="button" className={styles.playBtn} onClick={gameNavigate}>
         {ctaLabel}
         <svg
           viewBox="0 0 24 24"

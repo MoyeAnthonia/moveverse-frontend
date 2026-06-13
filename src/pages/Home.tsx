@@ -191,7 +191,7 @@ function Home({
 
 function Features({ badge = "Features" }: { badge?: string }) {
   return (
-    <section className={styles.how}>
+    <section id="features" className={styles.how}>
       <div className="wrap">
         <div className={styles.how__head}>
           <Badge label={badge} variant="cyan" />
@@ -211,7 +211,7 @@ function Features({ badge = "Features" }: { badge?: string }) {
 function AudienceSection({ badge = "Users" }: { badge?: string }) {
   type Accent = "orange" | "cyan" | "blue";
   return (
-    <section className={styles.section}>
+    <section id="audience" className={styles.section}>
       <div className={styles.inner}>
         <Badge label={badge} variant="cyan" />
         <h2 className={styles.heading}>Who is this for?</h2>
@@ -240,7 +240,7 @@ function AudienceSection({ badge = "Users" }: { badge?: string }) {
 
 function SelectWorkoutSection({ onPlay }: SelectWorkoutSectionProps) {
   return (
-    <section className={styles.games}>
+    <section id="games" className={styles.games}>
       <div className={styles.gamesInner}>
         <span className={styles.gamesPill}>Choose your game</span>
         <h2 className={styles.gamesHeading}>Select a workout</h2>

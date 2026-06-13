@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Navbar.module.css";
 import Button from "../Button/Button";
+import { useNavigate } from "react-router";
 import logo from "../../assets/logo-icon.png";
 
 // declare the props Data type
@@ -22,28 +23,29 @@ const defaultLinks: NavLink[] = [
   { label: "FAQ", href: "#faq" },
 ];
 
-export function Navbar({
-  brand = "MoveVerse",
-  links = defaultLinks,
-}: NavbarProps) {
+export function Navbar({ brand = "MoveVerse", links = defaultLinks }: NavbarProps) {
+  const nav = useNavigate();
+
+  const navigate = () => {
+    nav("/profile");
+  };
   const [open, setOpen] = useState(false);
   return (
     <nav className={styles.navbar}>
       <a href="#" className={styles.brandLogo}>
-      
-         <img src={logo} alt="Moveverse Logo" width="40" height="40" />
+        <img src={logo} alt="Moveverse Logo" width="40" height="40" />
 
         <span className={styles.brandName}>{brand}</span>
       </a>
 
-   <Button
-   className={styles.toggle}
+      <Button
+        className={styles.toggle}
         aria-label="Toggle navigation menu"
-             aria-expanded={open}
+        aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
-        label= {open ? "✕" : "☰"}
+        label={open ? "✕" : "☰"}
       />
-{/* Mapping the links array */}
+      {/* Mapping the links array */}
       <div className={`${styles.menu} ${open ? styles.open : ""}`}>
         <ul className={styles.links}>
           {links.map((item) => (
@@ -56,16 +58,13 @@ export function Navbar({
         </ul>
 
         <div className={styles.actions}>
-                <Button
-        label="Start Playing"
-        variant="primary"
-        aria-label="Start Game"
-      />
-   <Button
-        label="Sign In"
-        variant="secondary"
-        aria-label="Sign in Account"
-      />
+          <Button
+            onClick={navigate}
+            label="Start Playing"
+            variant="primary"
+            aria-label="Start Game"
+          />
+          <Button label="Sign In" variant="secondary" aria-label="Sign in Account" />
         </div>
       </div>
     </nav>
