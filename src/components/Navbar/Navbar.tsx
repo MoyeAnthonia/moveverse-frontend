@@ -3,6 +3,7 @@ import styles from "./Navbar.module.css";
 import Button from "../Button/Button";
 import { useNavigate, Link } from "react-router";
 import logo from "../../assets/logo-icon.png";
+import { useAuth } from "../../context/AuthContext";
 
 type NavItems = {
   label: string;
@@ -24,13 +25,14 @@ const defaultLinks: NavItems[] = [
 export function Navbar({ brand = "MoveVerse", links = defaultLinks }: NavbarProps) {
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
+  const { user, isAuthenticated } = useAuth();
 
   // 👇 active section state
   const [activeSection, setActiveSection] = useState("");
 
-  const navGames = () => {
-    nav("/level");
-  };
+  // const navGames = () => {
+  //   nav("/level");
+  // };
   const navLogin = () => {
     nav("/login");
   };
@@ -103,18 +105,31 @@ export function Navbar({ brand = "MoveVerse", links = defaultLinks }: NavbarProp
 
         {/* Actions */}
         <div className={styles.actions}>
-          <Button
+          {/* <Button
             onClick={navGames}
             label="Start Playing"
             variant="primary"
             aria-label="Start Game"
-          />
+          /> */}
           <Button
             onClick={navLogin}
-            label="Sign In"
-            variant="secondary"
-            aria-label="Sign in Account"
+            label="Start Playing"
+            variant="primary"
+            aria-label="Start Game"
           />
+          {isAuthenticated ? (
+            <>
+              <span>Hey, {user?.username} 👋</span>
+              {/* <Button
+            onClick={navLogin}
+            label="Logout"
+            variant="secondary"
+            aria-label="log out Account"
+          /> */}
+            </>
+          ) : (
+            <Button label="Sign In" variant="secondary" aria-label="Sign in Account" />
+          )}
         </div>
       </div>
     </nav>
