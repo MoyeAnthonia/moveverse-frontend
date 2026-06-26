@@ -1,5 +1,8 @@
 import styles from "./Warmup.module.css";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import Button from "../../components/Button/Button";
+import { MotionCard } from "../../components/Cards/Cards";
 type CheckStatus = "pending" | "checking" | "ok" | "fail";
 
 interface CheckItem {
@@ -14,15 +17,24 @@ const checkItems: CheckItem[] = [
   { id: "body", label: "Body in Frame", status: "checking" },
 ];
 
-function circleClass(status: CheckStatus): string {
-  if (status === "ok") return `${styles.csCheckCircle} ${styles.csCheckCircleOk}`;
-  if (status === "fail") return `${styles.csCheckCircle} ${styles.csCheckCircleFail}`;
-  return `${styles.csCheckCircle} ${styles.csCheckCirclePending}`;
-}
-
 function CameraSetupPage() {
   const allReady = checkItems.every((c) => c.status === "ok");
   const nav = useNavigate();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
+  const openCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setIsCameraOpen(true);
+      }
+    } catch (err) {
+      console.error("Camera access denied:", err);
+    }
+  };
+
   const gameNavigate = () => {
     nav("/exercise");
   };
@@ -30,7 +42,9 @@ function CameraSetupPage() {
     <div className={styles.csPage}>
       {/* NAV */}
       <nav className={styles.csNav}>
-        <button className={styles.csBackBtn}>Back</button>
+        <button className={styles.csBackBtn} onClick={() => nav(-1)}>
+          ← Back
+        </button>
         <span className={styles.csPageTitle}>Camera Setup</span>
         <div className={styles.csNavSpacer}></div>
       </nav>
@@ -38,34 +52,10 @@ function CameraSetupPage() {
       {/* MAIN LAYOUT */}
       <div className={styles.csLayout}>
         {/* LEFT – camera viewport */}
-        <div className={styles.csViewport}>
-          <div className={styles.csDashedInner}></div>
 
-          {/* Stick figure SVG – placeholder for Week 4 MediaPipe canvas */}
-          <svg
-            className={styles.csStickFigure}
-            viewBox="0 0 100 160"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            {/* head */}
-            <circle cx="50" cy="22" r="18" stroke="#38e1ff" strokeWidth="2.5" />
-            {/* body */}
-            <line x1="50" y1="40" x2="50" y2="95" stroke="#38e1ff" strokeWidth="2.5" />
-            {/* left leg */}
-            <line x1="50" y1="95" x2="28" y2="135" stroke="#38e1ff" strokeWidth="2.5" />
-            <line x1="28" y1="135" x2="28" y2="158" stroke="#38e1ff" strokeWidth="2.5" />
-            {/* right leg */}
-            <line x1="50" y1="95" x2="72" y2="135" stroke="#38e1ff" strokeWidth="2.5" />
-            <line x1="72" y1="135" x2="72" y2="158" stroke="#38e1ff" strokeWidth="2.5" />
-            {/* ankle circles (orange, matching screenshot) */}
-            <circle cx="28" cy="135" r="7" stroke="#f59e0b" strokeWidth="2" />
-            <circle cx="72" cy="135" r="7" stroke="#f59e0b" strokeWidth="2" />
-          </svg>
-
-          <div className={styles.csViewportLabel}>Squat Detection</div>
-        </div>
+        <MotionCard videoRef={videoRef} label="Squat Detection" showGuide={!isCameraOpen}>
+          {!isCameraOpen && <Button label="Open Camera" onClick={openCamera} />}
+        </MotionCard>
 
         {/* RIGHT – sidebar */}
         <aside className={styles.csSidebar}>
@@ -74,12 +64,8 @@ function CameraSetupPage() {
           {checkItems.map((item) => (
             <div key={item.id} className={styles.csCheckItem}>
               <div className={styles.csCheckLeft}>
-                <div className={circleClass(item.status)}></div>
                 <span className={styles.csCheckLabel}>{item.label}</span>
               </div>
-              {item.status === "checking" && (
-                <div className={styles.csSpinner} aria-label="Checking…"></div>
-              )}
             </div>
           ))}
 
