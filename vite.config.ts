@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import fs from "fs";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -7,12 +8,18 @@ export default defineConfig({
     react(),
     {
       name: "strip-mediapipe-sourcemap-comments",
-      transform(code, id) {
+      enforce: "pre",
+      load(id) {
         if (id.includes("@mediapipe")) {
-          return {
-            code: code.replace(/\/\/# sourceMappingURL=\S+/g, ""),
-            map: null,
-          };
+          try {
+            const code = fs.readFileSync(id, "utf-8");
+            return {
+              code: code.replace(/\/\/# sourceMappingURL=\S+/g, ""),
+              map: null,
+            };
+          } catch {
+            return null;
+          }
         }
       },
     },
